@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alejo Ruiz — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+  /* ================================================================
+     BASE & TOKENS
+  ================================================================ */
+  :root {
+    --bg:        #07070f;
+    --bg-alt:    #0c0c1b;
+    --card:      rgba(255,255,255,.032);
+    --border:    rgba(255,255,255,.07);
+    --accent:    #6366f1;
+    --accent2:   #06b6d4;
+    --glow:      rgba(99,102,241,.35);
+    --text:      #f1f5f9;
+    --muted:     #94a3b8;
+    --subtle:    #475569;
+    --r:         14px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+  /* ================================================================
+     ANIMATIONS
+  ================================================================ */
+  @keyframes fadeUp    { from{opacity:0;transform:translateY(26px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes float     { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-11px)} }
+  @keyframes pulse-dot { 0%,100%{box-shadow:0 0 6px #4ade80} 50%{box-shadow:0 0 14px #4ade80,0 0 28px #4ade80} }
+  @keyframes fadeIn    { from{opacity:0} to{opacity:1} }
+  @keyframes modalPop  { from{opacity:0;transform:scale(.94) translateY(12px)} to{opacity:1;transform:scale(1) translateY(0)} }
+  @keyframes slideRight{ from{opacity:0;transform:translateX(-16px)} to{opacity:1;transform:translateX(0)} }
+
+  .float { animation: float 4s ease-in-out infinite; }
+
+  /* Scroll reveal */
+  .sr { opacity:0; transform:translateY(22px); transition:opacity .65s ease, transform .65s ease; }
+  .sr.vis { opacity:1; transform:none; }
+  .sr-delay-1 { transition-delay:.1s; }
+  .sr-delay-2 { transition-delay:.2s; }
+  .sr-delay-3 { transition-delay:.3s; }
+  .sr-delay-4 { transition-delay:.4s; }
+
+  /* ================================================================
+     TYPOGRAPHY
+  ================================================================ */
+  .gradient-text {
+    background: linear-gradient(135deg, #818cf8, #06b6d4);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* ================================================================
+     LAYOUT
+  ================================================================ */
+  .section { padding: 92px 5%; }
+  .inner   { max-width: 1200px; margin: 0 auto; }
+
+  /* ================================================================
+     COMPONENTS — Glass Card
+  ================================================================ */
+  .glass {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--r);
+    transition: border-color .28s, background .28s, transform .28s, box-shadow .28s;
+  }
+  .glass.hoverable:hover {
+    border-color: rgba(99,102,241,.3); background: rgba(99,102,241,.04);
+    transform: translateY(-4px); box-shadow: 0 18px 44px rgba(0,0,0,.35);
+  }
+
+  /* ================================================================
+     COMPONENTS — Buttons
+  ================================================================ */
+  .btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 11px 26px; border-radius: 9px; font-weight: 600; font-size: .88rem;
+    cursor: pointer; text-decoration: none; transition: all .22s; border: none; white-space: nowrap;
+  }
+  .btn-primary { background: linear-gradient(135deg,#6366f1,#06b6d4); color:#fff; }
+  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(99,102,241,.42); }
+  .btn-ghost   { background:transparent; color:#a5b4fc; border:1px solid rgba(99,102,241,.35); }
+  .btn-ghost:hover { background:rgba(99,102,241,.09); border-color:rgba(99,102,241,.7); transform:translateY(-2px); }
+  .btn-sm      { padding:6px 15px; font-size:.78rem; }
+  .btn-danger  { background:rgba(239,68,68,.1); color:#f87171; border:1px solid rgba(239,68,68,.28); }
+  .btn-danger:hover { background:rgba(239,68,68,.18); }
+  .btn-purple  { background:rgba(124,58,237,.12); color:#c084fc; border:1px solid rgba(124,58,237,.28); }
+  .btn-purple:hover { background:rgba(124,58,237,.22); }
+
+  /* ================================================================
+     COMPONENTS — Tags & Badges
+  ================================================================ */
+  .tag {
+    display:inline-block; background:rgba(99,102,241,.09); border:1px solid rgba(99,102,241,.2);
+    color:#a5b4fc; padding:4px 11px; border-radius:20px; font-size:.7rem; font-weight:500;
+    transition:all .18s;
+  }
+  .tag:hover { background:rgba(99,102,241,.18); border-color:rgba(99,102,241,.5); }
+  .badge { padding:3px 10px; border-radius:12px; font-size:.68rem; font-weight:700; letter-spacing:.02em; }
+  .badge-ml    { background:rgba(168,85,247,.1);  border:1px solid rgba(168,85,247,.28); color:#d8b4fe; }
+  .badge-unity { background:rgba(22,163,74,.1);   border:1px solid rgba(22,163,74,.28);  color:#86efac; }
+  .badge-web   { background:rgba(234,88,12,.1);   border:1px solid rgba(234,88,12,.28);  color:#fdba74; }
+  .badge-prob  { background:rgba(6,182,212,.1);   border:1px solid rgba(6,182,212,.28);  color:#67e8f9; }
+
+  /* Section title with gradient underline */
+  .sec-title {
+    font-size: clamp(1.7rem,3vw,2.2rem); font-weight:800; position:relative; display:inline-block; margin-bottom:10px;
+  }
+  .sec-title::after {
+    content:''; display:block; height:3px; width:52px;
+    background:linear-gradient(90deg,#6366f1,#06b6d4); border-radius:2px; margin-top:8px;
+  }
+
+  /* Highlight pill */
+  .pill {
+    display:inline-flex; align-items:center; gap:6px;
+    background:rgba(6,182,212,.09); border:1px solid rgba(6,182,212,.24);
+    color:#67e8f9; padding:5px 14px; border-radius:20px; font-size:.74rem; font-weight:600;
+  }
+
+  /* ================================================================
+     NAVBAR
+  ================================================================ */
+  .navbar {
+    position:fixed; top:0; left:0; right:0; z-index:900;
+    padding:0 5%; transition:background .32s, backdrop-filter .32s, border-bottom .32s;
+  }
+  .navbar.scrolled {
+    background:rgba(7,7,15,.88); backdrop-filter:blur(22px);
+    border-bottom:1px solid rgba(255,255,255,.05);
+  }
+  .navbar.has-adminbar { top:36px; }
+  .nav-inner { max-width:1200px; margin:0 auto; height:64px; display:flex; align-items:center; justify-content:space-between; }
+  .nav-link { color:var(--muted); text-decoration:none; font-size:.86rem; font-weight:500; transition:color .2s; background:none; border:none; cursor:pointer; }
+  .nav-link:hover { color:#a5b4fc; }
+
+  /* ================================================================
+     ADMIN BAR
+  ================================================================ */
+  .admin-bar {
+    position:fixed; top:0; left:0; right:0; z-index:950; height:36px;
+    background:linear-gradient(135deg,rgba(109,40,217,.88),rgba(8,145,178,.88));
+    backdrop-filter:blur(12px);
+    display:flex; align-items:center; justify-content:space-between; padding:0 5%;
+    font-size:.77rem; font-weight:600; color:#fff;
+  }
+  .admin-dot { width:7px; height:7px; border-radius:50%; background:#4ade80; animation:pulse-dot 2s infinite; }
+
+  /* Edit button on cards — visible on hover */
+  .card-wrap { position:relative; }
+  .card-edit-btn {
+    position:absolute; top:10px; right:10px; z-index:5;
+    background:rgba(109,40,217,.82); color:white; border:none; border-radius:7px;
+    padding:5px 11px; font-size:.7rem; font-weight:700; cursor:pointer;
+    opacity:0; transition:opacity .2s;
+  }
+  .card-wrap:hover .card-edit-btn { opacity:1; }
+
+  /* Admin toggle — subtle lock icon bottom-right */
+  .admin-toggle {
+    position:fixed; bottom:22px; right:22px; z-index:800;
+    width:34px; height:34px; border-radius:9px;
+    background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07);
+    display:flex; align-items:center; justify-content:center;
+    font-size:.9rem; cursor:pointer; opacity:.28;
+    transition:opacity .22s, background .22s, transform .22s;
+  }
+  .admin-toggle:hover { opacity:.92; background:rgba(109,40,217,.22); transform:scale(1.1); }
+
+  /* ================================================================
+     MODAL
+  ================================================================ */
+  .modal-overlay {
+    position:fixed; inset:0; z-index:2000;
+    background:rgba(0,0,0,.8); backdrop-filter:blur(14px);
+    display:flex; align-items:center; justify-content:center; padding:16px;
+    animation:fadeIn .18s ease;
+  }
+  .modal-box {
+    background:#0c0c1c; border:1px solid rgba(99,102,241,.22); border-radius:20px;
+    width:100%; max-width:800px; max-height:90vh; overflow-y:auto; position:relative;
+    animation:modalPop .28s ease;
+  }
+  .modal-box::-webkit-scrollbar { width:4px; }
+  .modal-close {
+    position:sticky; top:16px; float:right; margin:16px 16px 0 0;
+    width:30px; height:30px; border-radius:50%;
+    background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.1);
+    color:var(--muted); font-size:.9rem; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; transition:all .2s; flex-shrink:0;
+  }
+  .modal-close:hover { background:rgba(239,68,68,.14); color:#f87171; }
+
+  /* Modal tabs */
+  .modal-tabs { display:flex; border-bottom:1px solid var(--border); padding:0 26px; }
+  .modal-tab {
+    padding:13px 22px; font-size:.84rem; font-weight:600; cursor:pointer;
+    color:var(--muted); border:none; background:none;
+    border-bottom:2px solid transparent; margin-bottom:-1px; transition:all .2s;
+  }
+  .modal-tab.active { color:#a5b4fc; border-bottom-color:#6366f1; }
+  .modal-tab:hover:not(.active) { color:var(--text); }
+
+  /* ================================================================
+     GALLERY & VIDEO
+  ================================================================ */
+  .gallery { display:grid; grid-template-columns:repeat(auto-fill,minmax(175px,1fr)); gap:9px; }
+  .gallery img {
+    width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:8px;
+    border:1px solid var(--border); cursor:pointer; transition:transform .2s, border-color .2s;
+  }
+  .gallery img:hover { transform:scale(1.025); border-color:rgba(99,102,241,.4); }
+  .video-wrap { position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:11px; }
+  .video-wrap iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:none; border-radius:11px; }
+
+  /* ================================================================
+     FORM ELEMENTS
+  ================================================================ */
+  .form-group { display:flex; flex-direction:column; gap:5px; margin-bottom:14px; }
+  .form-label  { font-size:.76rem; color:var(--muted); font-weight:600; }
+  .form-input, .form-textarea {
+    background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); border-radius:8px;
+    padding:9px 13px; color:var(--text); font-size:.86rem; font-family:'Inter',sans-serif;
+    transition:border-color .2s; outline:none; width:100%;
+  }
+  .form-input:focus, .form-textarea:focus { border-color:rgba(99,102,241,.6); }
+  .form-textarea { min-height:86px; resize:vertical; }
+
+  /* ================================================================
+     HERO BLOBS
+  ================================================================ */
+  .blob { position:absolute; border-radius:50%; filter:blur(88px); pointer-events:none; }
+
+  /* ================================================================
+     FILTER TABS
+  ================================================================ */
+  .ftab {
+    padding:7px 19px; border-radius:22px; border:none; cursor:pointer;
+    font-weight:600; font-size:.82rem; transition:all .22s;
+  }
+  .ftab.on  { background:linear-gradient(135deg,#6366f1,#06b6d4); color:#fff; box-shadow:0 4px 16px rgba(99,102,241,.32); }
+  .ftab.off { background:rgba(255,255,255,.04); color:var(--muted); }
+  .ftab.off:hover { background:rgba(99,102,241,.1); color:#a5b4fc; }
+
+  /* ================================================================
+     FEATURED CARDS (internship section)
+  ================================================================ */
+  .feat-card {
+    background:rgba(6,182,212,.03); border:1px solid rgba(6,182,212,.18); border-radius:var(--r);
+    padding:26px; transition:all .28s; cursor:pointer;
+  }
+  .feat-card:hover { border-color:rgba(6,182,212,.42); background:rgba(6,182,212,.07); transform:translateY(-4px); box-shadow:0 18px 44px rgba(0,0,0,.32); }
+
+  /* ================================================================
+     TIMELINE
+  ================================================================ */
+  .tl-line { position:absolute; left:15px; top:0; bottom:0; width:2px; background:linear-gradient(to bottom,#6366f1,#06b6d4 70%,transparent); }
+  .tl-dot  { position:absolute; left:8px; width:16px; height:16px; border-radius:50%; background:linear-gradient(135deg,#6366f1,#06b6d4); box-shadow:0 0 14px rgba(99,102,241,.55); }
+
+  /* ================================================================
+     RESPONSIVE
+  ================================================================ */
+  @media(max-width:768px) {
+    .hero-grid, .about-grid { grid-template-columns:1fr !important; }
+    .hero-visual { display:none !important; }
+    .feat-grid, .proj-grid, .skills-grid { grid-template-columns:1fr !important; }
+    .nav-links .nav-link:not(.btn) { display:none; }
+    .section { padding:68px 5%; }
+  }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+/* ================================================================
+   ✏️  PORTFOLIO DATA — Edit your personal info here.
+   To add GitHub links, images, videos to each project: open the
+   portfolio in your browser and use the 🔧 Admin Panel (bottom-right).
+================================================================ */
+const CONFIG = {
+
+  /* ── Personal ───────────────────────────────────────── */
+  name:      "Alejo Ruiz",
+  role:      "Systems Engineering Student",
+  tagline:   "Probabilistic Models · Software Architecture · 3 Countries",
+  bio:       "Systems Engineering student with strong foundations in probabilistic reasoning, Bayesian methods, and software architecture. International academic experience across Colombia, Argentina, and Austria. I work at the intersection of mathematical thinking and software engineering — from Bayesian inference engines to scalable multi-tier systems.",
+  email:     "alejoruiz1110@gmail.com",
+  github:    "",     // ← paste your GitHub URL
+  linkedin:  "",     // ← paste your LinkedIn URL
+
+  internshipNote: "Actively seeking internship in probabilistic modeling & PPL development.",
+
+  /* ── Education ──────────────────────────────────────── */
+  education: [
+    { id:"uib",    institution:"Universidad de Ibagué",                       degree:"Systems Engineering — Current Student",  period:"Colombia 🇨🇴",  note:"Scholarship: Talento Tolima" },
+    { id:"itba",   institution:"ITBA — Instituto Tecnológico de Buenos Aires", degree:"Exchange Semester",                     period:"Argentina 🇦🇷", note:"AI coursework including Bayesian classification methods." },
+    { id:"leoben", institution:"Montanuniversität Leoben",                    degree:"Exchange Semester",                     period:"Austria 🇦🇹",   note:"Mulgrain Scholarship. Courses taught fully in English." },
+    { id:"comfa",  institution:"Colegio Comfatolima",                         degree:"High School Diploma",                   period:"Colombia 🇨🇴",  note:"" }
+  ],
+
+  /* ── Projects (ordered by internship relevance) ─────── */
+  projects: [
+    {
+      id:"searchme", title:"SearchMe — Probabilistic Object Matching",
+      shortTitle:"SearchMe",
+      desc:"Web platform for lost & found reports in university environments. Implements a Bayesian inference engine to compute the posterior probability that a lost report and a found report refer to the same physical object.",
+      longDesc:"The core of SearchMe is a probabilistic matching engine built on Bayes' theorem. Given attributes from a lost-object report and a found-object report, the system computes a posterior probability that both describe the same item — factoring in attribute similarity, location proximity, and time overlap. Designed to demonstrate real-world probabilistic inference beyond toy datasets. Built with a React frontend and a Python/REST backend.",
+      tech:["Bayesian Inference","Python","Probability Theory","React","REST API","Statistical Matching"],
+      cat:"prob", star:"Bayesian core", highlight:true, minor:false
+    },
+    {
+      id:"ml-workshops", title:"Probabilistic & ML Workshops in R",
+      shortTitle:"ML Workshops",
+      desc:"Four statistical computing workshops in R covering supervised and unsupervised probabilistic techniques: SVM, Naive Bayes, Neural Networks, K-means clustering, and Kohonen Self-Organizing Maps.",
+      longDesc:"Implemented and analyzed five machine learning techniques:\n• Support Vector Machines (SVM) for binary classification tasks with kernel methods.\n• Naive Bayes classifiers applying Bayesian probabilistic reasoning over feature distributions.\n• Multi-layer Neural Networks with backpropagation and activation function experiments.\n• K-means clustering for unsupervised grouping with elbow-method selection.\n• Kohonen Self-Organizing Maps for topological dimensionality reduction.\nEach workshop includes model training, evaluation metrics, and interpretation of probabilistic outputs.",
+      tech:["R","SVM","Naive Bayes","Neural Networks","K-means","Kohonen Maps","Statistical Computing"],
+      cat:"ml", star:"Most relevant for internship", highlight:true, minor:false
+    },
+    {
+      id:"attention-chaos", title:"Attention Chaos — VR Cognitive Simulation",
+      shortTitle:"Attention Chaos",
+      desc:"VR simulation in Unity (C#) designed to emulate attention-related cognitive challenges and generate empathy toward ADHD-related experiences. Features multi-threading and interactive event systems.",
+      longDesc:"Developed a real-time VR simulation using Unity and C#. Implemented multi-threading to run concurrent cognitive distraction systems simultaneously, interactive event pipelines for sensory feedback, and dynamic overload mechanics. The technical focus was on immersive systems design and real-time user interaction modeling under concurrent execution constraints.",
+      tech:["Unity","C#","VR","Multi-threading","Event Systems","Physics Simulation"],
+      cat:"unity", star:"", highlight:false, minor:false
+    },
+    {
+      id:"duckventure", title:"Duckventure — 3D Software Architecture Project",
+      shortTitle:"Duckventure",
+      desc:"Complete 3D project in Unity (C#) applying advanced software engineering principles: Factory, Strategy, and Serializable patterns throughout fully modular systems. The most technically rigorous project in terms of architecture.",
+      longDesc:"Implemented Factory, Strategy, and Serializable architectural patterns to build fully modular, extensible gameplay systems. Designed scalable OOP hierarchies with clean separation of concerns across all subsystems. Every component was designed for reuse and maintainability — this project represents the most deliberate application of software engineering principles in my work.",
+      tech:["Unity","C#","Factory Pattern","Strategy Pattern","Serializables","OOP","System Design"],
+      cat:"unity", star:"Architecture showcase", highlight:false, minor:false
+    },
+    {
+      id:"dealership", title:"Dealership Management System",
+      shortTitle:"Dealership System",
+      desc:"Multi-client dealership app: React frontend, Spring Boot REST API, Django administrative client — all backed by Oracle SQL. Applied Singleton, Observer, and MVC patterns throughout.",
+      longDesc:"A full-stack system demonstrating cross-platform architecture. Built in a team with a React web client, Spring Boot REST server following MVC, a Django-based administrative client, and an Oracle SQL relational database. Design patterns applied: Singleton for shared service instances, Observer for cross-client event propagation, MVC for clean layer separation. Database schema designed with normalization and ER modeling.",
+      tech:["React","Spring Boot","Django","Oracle SQL","MVC","Singleton","Observer","REST API"],
+      cat:"web", star:"Full-stack", highlight:false, minor:false
+    },
+    {
+      id:"circo", title:"Fuga del Circo Maldito",
+      shortTitle:"Circo Maldito",
+      desc:"3D horror escape-room built in Unity for a UI/UX course. All player guidance emerges from environmental storytelling — no explicit tutorial UI. Focus on interaction affordances and spatial cues.",
+      longDesc:"Designed and implemented a horror 3D environment in Unity with a strong UI/UX focus. All player guidance had to emerge from environmental storytelling rather than explicit interface elements. The project required careful attention to interaction affordances, spatial reasoning cues, and user mental models — applying UX principles in an immersive 3D context.",
+      tech:["Unity","C#","UI/UX Design","3D Level Design","Environment Storytelling"],
+      cat:"unity", star:"", highlight:false, minor:false
+    },
+    {
+      id:"minishop", title:"Mini Shop — Laravel E-commerce",
+      shortTitle:"Mini Shop",
+      desc:"E-commerce store built with Laravel following MVC architecture — Eloquent ORM, Blade templates, user authentication, and product management.",
+      longDesc:"Implemented a complete small-scale e-commerce application in Laravel. Features: product catalog, user authentication, shopping cart, Eloquent ORM for database interactions, and Blade template engine for views. A clean, straightforward demonstration of PHP web framework proficiency and MVC architecture.",
+      tech:["Laravel","PHP","MySQL","MVC","Blade","Eloquent ORM"],
+      cat:"web", star:"", highlight:false, minor:false
+    },
+    {
+      id:"habit", title:"Habit Tracker",
+      shortTitle:"Habit Tracker",
+      desc:"Minimalist habit tracking web app built with pure HTML, CSS, and vanilla JavaScript.",
+      longDesc:"A lightweight browser-based habit tracker with local persistence. Intentionally built without any frameworks to practice clean vanilla JavaScript fundamentals.",
+      tech:["HTML","CSS","JavaScript"],
+      cat:"web", star:"", highlight:false, minor:true
+    }
+  ],
+
+  /* ── Skills ─────────────────────────────────────────── */
+  skills: {
+    "Probabilistic & Statistical":  ["Bayesian Inference","Naive Bayes","Probabilistic Reasoning","Bayesian Statistics","Uncertainty Modeling","Statistical Computing"],
+    "Machine Learning":             ["Supervised Learning","Unsupervised Learning","SVM","Neural Networks","K-means","Kohonen Maps"],
+    "Programming Languages":        ["Python","R","C#","Java","JavaScript","PHP","C++","SQL","HTML / CSS"],
+    "Software Architecture":        ["OOP","MVC","Singleton","Factory","Strategy","Observer","REST APIs","Design Patterns"],
+    "Simulation & Game Systems":    ["Unity","Unity VR","Multi-threading","Physics Simulation","Gameplay Scripting","Object Pooling"],
+    "Frameworks & Tools":           ["React","Spring Boot","Django","Laravel","Git","Blender","Photoshop"],
+    "Databases":                    ["Oracle SQL","Relational Databases","Data Modeling","ERD"]
+  },
+
+  /* ── Certifications ─────────────────────────────────── */
+  certifications: [
+    {
+      id:"bayesian", name:"Bayesian Statistics", issuer:"Online Certification",
+      note:"Coursework covering probabilistic inference, prior/posterior distributions, Bayesian updating, and applied reasoning under uncertainty.",
+      relevant:true
+    }
+  ],
+
+  /* ── Adaptability ───────────────────────────────────── */
+  adaptability: [
+    { icon:"🌍", text:"Studied across three countries — Colombia, Argentina, and Austria — comfortable in multicultural, multilingual academic environments." },
+    { icon:"🇬🇧", text:"Coursework at Montanuniversität Leoben fully taught in English; research and technical reading done primarily in English." },
+    { icon:"🤝", text:"Experience coordinating software development tasks in international university team projects." },
+    { icon:"⚡", text:"Strong self-learning skills — independently mastered probability theory, Bayesian methods, and machine learning outside of coursework." },
+    { icon:"🧭", text:"Genuinely curious and open-minded toward different cultures, ways of working, and technical perspectives." }
+  ],
+
+  /* ── Admin password ─────────────────────────────────── */
+  /* Change this to whatever password you want           */
+  adminPass: "alejo2024"
+};
+
+/* ================================================================
+   UTILITIES
+================================================================ */
+const STORE_KEY = "portfolio_v3";
+
+function loadStore()   { try { const d=localStorage.getItem(STORE_KEY); return d?JSON.parse(d):{projects:{},certs:{}}; } catch{return{projects:{},certs:{}}; } }
+function saveStore(d)  { try { localStorage.setItem(STORE_KEY,JSON.stringify(d)); return true; } catch(e){ console.warn("Storage full",e); return false; } }
+
+function ytId(url) {
+  if(!url) return null;
+  const m=url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/);
+  return m?m[1]:null;
+}
+
+const { useState, useEffect, useRef, useContext, createContext, useCallback } = React;
+
+/* ================================================================
+   CONTEXT
+================================================================ */
+const Ctx = createContext(null);
+
+/* ================================================================
+   HOOK — Scroll Reveal
+================================================================ */
+function useReveal(ref) {
+  useEffect(() => {
+    if(!ref.current) return;
+    const els = ref.current.querySelectorAll('.sr');
+    const io = new IntersectionObserver(entries=>{
+      entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('vis'); });
+    },{ threshold:.1 });
+    els.forEach(el=>io.observe(el));
+    return ()=>io.disconnect();
+  },[]);
+}
+
+/* ================================================================
+   ADMIN BAR
+================================================================ */
+function AdminBar({ onExit }) {
+  return (
+    <div className="admin-bar">
+      <div style={{display:'flex',alignItems:'center',gap:'10px'}}>
+        <div className="admin-dot"/>
+        <span>Admin Mode — Click any project card to edit its links &amp; media</span>
+      </div>
+      <button onClick={onExit} className="btn btn-sm"
+        style={{background:'rgba(255,255,255,.14)',color:'white',padding:'4px 14px',fontSize:'.71rem'}}>
+        Exit Admin
+      </button>
+    </div>
+  );
+}
+
+/* ================================================================
+   ADMIN TOGGLE (hidden 🔧 icon)
+================================================================ */
+function AdminToggle() {
+  const { adminMode, setAdminMode } = useContext(Ctx);
+  function handle() {
+    if(adminMode){ setAdminMode(false); return; }
+    const pw = window.prompt("Admin password:");
+    if(pw===null) return;
+    if(pw===CONFIG.adminPass) setAdminMode(true);
+    else alert("Incorrect password.");
+  }
+  return (
+    <button className="admin-toggle" onClick={handle}
+      title={adminMode?"Exit admin mode":"Admin login"}>
+      {adminMode ? "🔓" : "🔧"}
+    </button>
+  );
+}
+
+/* ================================================================
+   NAVBAR
+================================================================ */
+function Navbar() {
+  const { adminMode } = useContext(Ctx);
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(()=>{
+    const fn=()=>setScrolled(window.scrollY>55);
+    window.addEventListener('scroll',fn); return()=>window.removeEventListener('scroll',fn);
+  },[]);
+  const links=[{l:'Focus',h:'#focus'},{l:'About',h:'#about'},{l:'Projects',h:'#projects'},{l:'Education',h:'#education'},{l:'Skills',h:'#skills'},{l:'Contact',h:'#contact'}];
+  return (
+    <nav className={`navbar ${scrolled?'scrolled':''} ${adminMode?'has-adminbar':''}`}>
+      <div className="nav-inner">
+        <span className="gradient-text mono" style={{fontWeight:700,fontSize:'1.1rem'}}>&lt;AR /&gt;</span>
+        <div className="nav-links" style={{display:'flex',alignItems:'center',gap:'26px'}}>
+          {links.map(l=><a key={l.l} href={l.h} className="nav-link">{l.l}</a>)}
+          <a href={`mailto:${CONFIG.email}`} className="btn btn-primary" style={{padding:'7px 18px',fontSize:'.82rem'}}>Hire Me</a>
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+/* ================================================================
+   HERO
+================================================================ */
+function Hero() {
+  const { adminMode } = useContext(Ctx);
+  const top = adminMode ? 100 : 64;
+  return (
+    <section style={{minHeight:'100vh',display:'flex',alignItems:'center',padding:`${top+56}px 5% 72px`,position:'relative',overflow:'hidden'}}>
+      <div className="blob" style={{width:'580px',height:'580px',left:'-110px',top:'-70px',background:'rgba(99,102,241,.11)'}}/>
+      <div className="blob" style={{width:'440px',height:'440px',right:'-70px',top:'8%',background:'rgba(6,182,212,.08)'}}/>
+      <div className="blob" style={{width:'320px',height:'320px',left:'32%',bottom:'-40px',background:'rgba(99,102,241,.07)'}}/>
+      <div className="inner" style={{position:'relative',zIndex:1}}>
+        <div className="hero-grid" style={{display:'grid',gridTemplateColumns:'1fr 340px',gap:'56px',alignItems:'center'}}>
+          <div>
+            <div className="pill" style={{marginBottom:'26px',animation:'fadeUp .5s ease both'}}>
+              🎯 {CONFIG.internshipNote}
+            </div>
+            <h1 style={{fontSize:'clamp(2.6rem,6vw,4.8rem)',fontWeight:900,lineHeight:1.06,marginBottom:'14px',animation:'fadeUp .55s .08s ease both'}}>
+              I'm <span className="gradient-text">{CONFIG.name}</span>
+            </h1>
+            <h2 style={{fontSize:'clamp(.95rem,2vw,1.22rem)',fontWeight:500,color:'var(--muted)',marginBottom:'20px',animation:'fadeUp .55s .16s ease both'}}>
+              {CONFIG.tagline}
+            </h2>
+            <p style={{color:'var(--subtle)',lineHeight:1.85,maxWidth:'570px',marginBottom:'34px',fontSize:'.97rem',animation:'fadeUp .55s .22s ease both'}}>
+              {CONFIG.bio}
+            </p>
+            <div style={{display:'flex',gap:'11px',flexWrap:'wrap',marginBottom:'44px',animation:'fadeUp .55s .28s ease both'}}>
+              <a href="#focus"   className="btn btn-primary">Probabilistic Work</a>
+              <a href="#projects" className="btn btn-ghost">All Projects</a>
+              <a href={`mailto:${CONFIG.email}`} className="btn btn-ghost">Contact</a>
+            </div>
+            <div style={{display:'flex',gap:'26px',flexWrap:'wrap',paddingTop:'22px',borderTop:'1px solid rgba(255,255,255,.05)',animation:'fadeUp .55s .34s ease both'}}>
+              {[{icon:'📐',val:'Bayesian',label:'Statistics'},{icon:'🌍',val:'3',label:'Countries'},{icon:'🏗️',val:'8+',label:'Projects'},{icon:'💻',val:'9+',label:'Languages'}].map(s=>(
+                <div key={s.label} style={{textAlign:'center'}}>
+                  <div style={{fontSize:'1.25rem',marginBottom:'3px'}}>{s.icon}</div>
+                  <div style={{fontWeight:800,fontSize:'.98rem',color:'var(--text)'}}>{s.val}</div>
+                  <div style={{color:'var(--subtle)',fontSize:'.7rem'}}>{s.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="hero-visual float" style={{textAlign:'center'}}>
+            <div style={{width:'290px',height:'290px',borderRadius:'50%',background:'linear-gradient(135deg,rgba(99,102,241,.2),rgba(6,182,212,.14))',border:'2px solid rgba(99,102,241,.22)',boxShadow:'0 0 90px rgba(99,102,241,.18)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'96px',position:'relative',margin:'0 auto'}}>
+              🧑‍💻
+              <div style={{position:'absolute',bottom:'18px',right:'18px',width:'50px',height:'50px',borderRadius:'13px',background:'linear-gradient(135deg,#6366f1,#06b6d4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'20px',boxShadow:'0 0 24px rgba(99,102,241,.5)'}}>📐</div>
+              <div style={{position:'absolute',top:'22px',left:'14px',width:'40px',height:'40px',borderRadius:'10px',background:'rgba(6,182,212,.13)',border:'1px solid rgba(6,182,212,.28)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'17px'}}>🌍</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================
+   PROBABILISTIC FOCUS — internship-relevant highlight section
+================================================================ */
+function ProbabilisticFocus() {
+  const { setModal } = useContext(Ctx);
+  const ref=useRef(); useReveal(ref);
+  const catClass={prob:'badge-prob',ml:'badge-ml',unity:'badge-unity',web:'badge-web'};
+  const catLabel={prob:'🔵 Probabilistic',ml:'🤖 ML / AI',unity:'🎮 Simulation',web:'🌐 Web'};
+  const highlighted=CONFIG.projects.filter(p=>p.highlight);
+  return (
+    <section id="focus" className="section" style={{background:'rgba(6,182,212,.018)',borderTop:'1px solid rgba(6,182,212,.07)',borderBottom:'1px solid rgba(6,182,212,.07)'}}>
+      <div className="inner" ref={ref}>
+        <div className="sr">
+          <div className="pill" style={{marginBottom:'16px'}}>🎯 Internship-Relevant Work</div>
+          <h2 className="sec-title">Probabilistic &amp; Statistical Work</h2>
+        </div>
+        <p className="sr sr-delay-1" style={{color:'var(--subtle)',marginBottom:'44px',maxWidth:'580px',marginTop:'8px'}}>
+          Projects and coursework most directly relevant to probabilistic programming, Bayesian modeling, and statistical machine learning.
+        </p>
+        <div className="feat-grid sr sr-delay-2" style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(340px,1fr))',gap:'20px'}}>
+          {highlighted.map(p=>(
+            <div key={p.id} className="feat-card" onClick={()=>setModal(p)}>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'13px',flexWrap:'wrap',gap:'6px'}}>
+                <span className={`badge ${catClass[p.cat]}`}>{catLabel[p.cat]}</span>
+                {p.star&&<span style={{fontSize:'.7rem',fontWeight:700,color:'#67e8f9',background:'rgba(6,182,212,.09)',border:'1px solid rgba(6,182,212,.2)',padding:'2px 10px',borderRadius:'12px'}}>⭐ {p.star}</span>}
+              </div>
+              <h3 style={{fontWeight:800,fontSize:'1.04rem',color:'var(--text)',marginBottom:'10px'}}>{p.shortTitle}</h3>
+              <p style={{color:'var(--subtle)',fontSize:'.87rem',lineHeight:1.75,marginBottom:'18px'}}>{p.desc}</p>
+              <div style={{display:'flex',flexWrap:'wrap',gap:'7px',marginBottom:'16px'}}>{p.tech.map(t=><span key={t} className="tag">{t}</span>)}</div>
+              <div style={{color:'#818cf8',fontSize:'.76rem',fontWeight:600}}>Click for full details →</div>
+            </div>
+          ))}
+        </div>
+        {/* Cert teaser */}
+        <div className="sr sr-delay-3" style={{marginTop:'32px',background:'rgba(99,102,241,.05)',border:'1px solid rgba(99,102,241,.18)',borderRadius:'12px',padding:'18px 22px',display:'flex',alignItems:'center',gap:'18px',flexWrap:'wrap'}}>
+          <span style={{fontSize:'1.8rem'}}>📜</span>
+          <div style={{flex:1}}>
+            <div style={{fontWeight:700,color:'var(--text)',fontSize:'.94rem'}}>Bayesian Statistics — Certification</div>
+            <div style={{color:'var(--subtle)',fontSize:'.81rem',marginTop:'3px'}}>Probabilistic inference, prior/posterior distributions, and Bayesian reasoning. Certificate available on request.</div>
+          </div>
+          <a href="#skills" style={{color:'#a5b4fc',fontSize:'.78rem',fontWeight:600,textDecoration:'none'}}>View in Skills →</a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================
+   ABOUT
+================================================================ */
+function About() {
+  const ref=useRef(); useReveal(ref);
+  return (
+    <section id="about" className="section">
+      <div className="inner about-grid" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'60px',alignItems:'start'}} ref={ref}>
+        <div>
+          <h2 className="sec-title sr">About Me</h2>
+          <p className="sr sr-delay-1" style={{color:'var(--muted)',lineHeight:1.9,marginBottom:'16px',fontSize:'.97rem',marginTop:'22px'}}>
+            I'm a Systems Engineering student from Ibagué, Colombia — currently holding the Talento Tolima full scholarship at Universidad de Ibagué. My academic path has taken me through exchange semesters in Buenos Aires (ITBA) and Leoben, Austria, exposing me to international research environments and pushing me to learn fast in new contexts.
+          </p>
+          <p className="sr sr-delay-2" style={{color:'var(--muted)',lineHeight:1.9,marginBottom:'16px',fontSize:'.97rem'}}>
+            My interest in probability came from genuine curiosity — backed by formal study: Bayesian statistics certification, applied Naive Bayes in Argentina's AI course, and building SearchMe's probabilistic matching engine. My next step is PyTorch projects in deep learning.
+          </p>
+          <p className="sr sr-delay-3" style={{color:'var(--muted)',lineHeight:1.9,marginBottom:'26px',fontSize:'.97rem'}}>
+            I care about clean, principled software. Good architecture isn't aesthetic preference — it's engineering discipline that makes every future decision easier.
+          </p>
+          <div className="sr sr-delay-4" style={{display:'flex',gap:'11px',flexWrap:'wrap'}}>
+            <a href={`mailto:${CONFIG.email}`} className="btn btn-primary">Contact Me</a>
+            {CONFIG.github   &&<a href={CONFIG.github}   target="_blank" className="btn btn-ghost">GitHub</a>}
+            {CONFIG.linkedin &&<a href={CONFIG.linkedin} target="_blank" className="btn btn-ghost">LinkedIn</a>}
+          </div>
+        </div>
+        <div>
+          <h3 className="sr" style={{fontWeight:700,fontSize:'.76rem',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:'18px',marginTop:'52px'}}>
+            <span className="gradient-text">Adaptability &amp; Soft Skills</span>
+          </h3>
+          <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
+            {CONFIG.adaptability.map((a,i)=>(
+              <div key={i} className={`sr sr-delay-${i+1} glass`} style={{padding:'14px 17px',display:'flex',gap:'12px',alignItems:'flex-start'}}>
+                <span style={{fontSize:'1.15rem',flexShrink:0,marginTop:'1px'}}>{a.icon}</span>
+                <p style={{color:'var(--muted)',fontSize:'.86rem',lineHeight:1.7}}>{a.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================
+   PROJECT MODAL
+================================================================ */
+function ProjectModal() {
+  const { modal, setModal, adminMode, store, updateStore } = useContext(Ctx);
+  const [tab, setTab] = useState('overview');
+  const [form, setForm] = useState({github:'',demo:'',videoUrl:'',imageUrls:[''],notes:''});
+  const [saved, setSaved] = useState(false);
+
+  useEffect(()=>{
+    if(!modal) return;
+    setTab('overview'); setSaved(false);
+    const ex=store.projects[modal.id]||{};
+    setForm({ github:ex.github||'', demo:ex.demo||'', videoUrl:ex.videoUrl||'', imageUrls:ex.imageUrls?.length?ex.imageUrls:[''], notes:ex.notes||'' });
+  },[modal]);
+
+  useEffect(()=>{ const fn=e=>{ if(e.key==='Escape') setModal(null); }; window.addEventListener('keydown',fn); return()=>window.removeEventListener('keydown',fn); },[]);
+
+  const catClass={prob:'badge-prob',ml:'badge-ml',unity:'badge-unity',web:'badge-web'};
+  const catLabel={prob:'🔵 Probabilistic',ml:'🤖 ML / AI',unity:'🎮 Simulation',web:'🌐 Web'};
+
+  if(!modal) return null;
+  const ex   = store.projects[modal.id]||{};
+  const vid  = ytId(ex.videoUrl||'');
+  const imgs = (ex.imageUrls||[]).filter(Boolean);
+  const hasMedia = vid||imgs.length>0;
+
+  // Build tabs
+  const tabs=[{id:'overview',label:'Overview'}];
+  if(hasMedia) tabs.push({id:'media',label:'Media'});
+  if(adminMode) tabs.push({id:'edit',label:'✏️ Edit'});
+
+  function saveForm() {
+    updateStore(prev=>({
+      ...prev,
+      projects:{ ...prev.projects, [modal.id]:{ ...form, imageUrls:form.imageUrls.filter(Boolean) } }
+    }));
+    setSaved(true); setTimeout(()=>setSaved(false),2000);
+  }
+
+  function uploadFiles(e) {
+    Array.from(e.target.files).forEach(f=>{
+      const r=new FileReader();
+      r.onload=ev=>setForm(prev=>({...prev,imageUrls:[...prev.imageUrls.filter(Boolean),ev.target.result]}));
+      r.readAsDataURL(f);
+    });
+  }
+
+  return (
+    <div className="modal-overlay" onClick={e=>{ if(e.target===e.currentTarget) setModal(null); }}>
+      <div className="modal-box">
+        <button className="modal-close" onClick={()=>setModal(null)}>✕</button>
+
+        {/* Header */}
+        <div style={{padding:'26px 26px 0',clear:'both'}}>
+          <div style={{display:'flex',gap:'9px',alignItems:'center',marginBottom:'11px',flexWrap:'wrap'}}>
+            <span className={`badge ${catClass[modal.cat]}`}>{catLabel[modal.cat]}</span>
+            {modal.star&&<span style={{fontSize:'.7rem',fontWeight:700,color:'#c084fc',background:'rgba(192,132,252,.09)',border:'1px solid rgba(192,132,252,.2)',padding:'2px 10px',borderRadius:'12px'}}>⭐ {modal.star}</span>}
+          </div>
+          <h2 style={{fontSize:'1.35rem',fontWeight:800,color:'var(--text)',marginBottom:'4px'}}>{modal.title}</h2>
+          <div style={{display:'flex',gap:'9px',marginTop:'13px',flexWrap:'wrap'}}>
+            {ex.github&&<a href={ex.github} target="_blank" className="btn btn-ghost btn-sm">⎈ GitHub</a>}
+            {ex.demo  &&<a href={ex.demo}   target="_blank" className="btn btn-ghost btn-sm">▶ Demo</a>}
+          </div>
+        </div>
+
+        {/* Tabs */}
+        {tabs.length>1&&(
+          <div className="modal-tabs" style={{marginTop:'20px'}}>
+            {tabs.map(t=><button key={t.id} className={`modal-tab ${tab===t.id?'active':''}`} onClick={()=>setTab(t.id)}>{t.label}</button>)}
+          </div>
+        )}
+
+        <div style={{padding:'22px 26px 26px'}}>
+
+          {/* ── Overview ── */}
+          {tab==='overview'&&(
+            <div>
+              <p style={{color:'var(--muted)',lineHeight:1.88,marginBottom:'20px',fontSize:'.93rem',whiteSpace:'pre-line'}}>
+                {modal.longDesc||modal.desc}
+              </p>
+              {ex.notes&&(
+                <div style={{background:'rgba(99,102,241,.06)',border:'1px solid rgba(99,102,241,.18)',borderRadius:'10px',padding:'13px 17px',marginBottom:'20px'}}>
+                  <p style={{color:'#a5b4fc',fontSize:'.87rem',lineHeight:1.72}}>{ex.notes}</p>
+                </div>
+              )}
+              <div style={{fontSize:'.74rem',color:'var(--muted)',fontWeight:600,textTransform:'uppercase',letterSpacing:'.06em',marginBottom:'9px'}}>Tech Stack</div>
+              <div style={{display:'flex',flexWrap:'wrap',gap:'7px'}}>{modal.tech.map(t=><span key={t} className="tag">{t}</span>)}</div>
+            </div>
+          )}
+
+          {/* ── Media ── */}
+          {tab==='media'&&(
+            <div>
+              {vid&&(
+                <div style={{marginBottom:'22px'}}>
+                  <div style={{fontSize:'.75rem',color:'var(--muted)',fontWeight:600,textTransform:'uppercase',letterSpacing:'.06em',marginBottom:'10px'}}>Video Demo</div>
+                  <div className="video-wrap">
+                    <iframe src={`https://www.youtube.com/embed/${vid}`} allowFullScreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"/>
+                  </div>
+                </div>
+              )}
+              {imgs.length>0&&(
+                <div>
+                  <div style={{fontSize:'.75rem',color:'var(--muted)',fontWeight:600,textTransform:'uppercase',letterSpacing:'.06em',marginBottom:'10px'}}>Screenshots</div>
+                  <div className="gallery">
+                    {imgs.map((src,i)=><img key={i} src={src} alt={`Screenshot ${i+1}`} onClick={()=>window.open(src,'_blank')} onError={e=>e.target.style.display='none'}/>)}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ── Edit (admin) ── */}
+          {tab==='edit'&&adminMode&&(
+            <div>
+              <div style={{background:'rgba(109,40,217,.07)',border:'1px solid rgba(109,40,217,.22)',borderRadius:'9px',padding:'12px 15px',marginBottom:'20px',fontSize:'.81rem',color:'#c084fc'}}>
+                🔧 Changes are saved in your browser (localStorage) and persist across sessions.
+              </div>
+              <div className="form-group">
+                <label className="form-label">GitHub / Repository URL</label>
+                <input className="form-input" placeholder="https://github.com/..." value={form.github} onChange={e=>setForm(f=>({...f,github:e.target.value}))}/>
+              </div>
+              <div className="form-group">
+                <label className="form-label">Live Demo URL</label>
+                <input className="form-input" placeholder="https://..." value={form.demo} onChange={e=>setForm(f=>({...f,demo:e.target.value}))}/>
+              </div>
+              <div className="form-group">
+                <label className="form-label">YouTube Video URL (auto-embedded)</label>
+                <input className="form-input" placeholder="https://youtube.com/watch?v=..." value={form.videoUrl} onChange={e=>setForm(f=>({...f,videoUrl:e.target.value}))}/>
+              </div>
+              <div className="form-group">
+                <label className="form-label">Images (URLs or uploads)</label>
+                {form.imageUrls.map((u,i)=>(
+                  <div key={i} style={{display:'flex',gap:'7px',marginBottom:'7px'}}>
+                    <input className="form-input" placeholder="Image URL..." value={u} onChange={e=>{ const a=[...form.imageUrls]; a[i]=e.target.value; setForm(f=>({...f,imageUrls:a})); }}/>
+                    {form.imageUrls.length>1&&<button className="btn btn-sm btn-danger" onClick={()=>setForm(f=>({...f,imageUrls:f.imageUrls.filter((_,j)=>j!==i)}))}>✕</button>}
+                  </div>
+                ))}
+                <div style={{display:'flex',gap:'8px',marginTop:'5px',flexWrap:'wrap'}}>
+                  <button className="btn btn-ghost btn-sm" onClick={()=>setForm(f=>({...f,imageUrls:[...f.imageUrls,'']}))}>+ Add URL</button>
+                  <label className="btn btn-ghost btn-sm" style={{cursor:'pointer'}}>
+                    📁 Upload Image(s)
+                    <input type="file" accept="image/*" multiple style={{display:'none'}} onChange={uploadFiles}/>
+                  </label>
+                </div>
+                <div style={{fontSize:'.7rem',color:'var(--subtle)',marginTop:'6px'}}>💡 Uploaded images are stored locally in your browser. For large images, prefer hosting them and adding the URL.</div>
+              </div>
+              <div className="form-group">
+                <label className="form-label">Additional Notes (shown in project overview)</label>
+                <textarea className="form-textarea" placeholder="Extra context, achievements, or notes..." value={form.notes} onChange={e=>setForm(f=>({...f,notes:e.target.value}))}/>
+              </div>
+              <button className="btn btn-primary" onClick={saveForm} style={{marginTop:'4px'}}>
+                {saved ? '✓ Saved!' : 'Save Changes'}
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ================================================================
+   PROJECTS GRID
+================================================================ */
+function Projects() {
+  const { setModal, adminMode } = useContext(Ctx);
+  const [filter, setFilter] = useState('all');
+  const ref=useRef(); useReveal(ref);
+  const catClass={prob:'badge-prob',ml:'badge-ml',unity:'badge-unity',web:'badge-web'};
+  const catLabel={prob:'🔵 Probabilistic',ml:'🤖 ML / AI',unity:'🎮 Simulation',web:'🌐 Web'};
+  const tabs=[{id:'all',l:'✦ All'},{id:'prob',l:'🔵 Probabilistic'},{id:'ml',l:'🤖 ML / AI'},{id:'unity',l:'🎮 Simulation'},{id:'web',l:'🌐 Web'}];
+  const visible=CONFIG.projects.filter(p=>filter==='all'||p.cat===filter);
+  return (
+    <section id="projects" className="section" style={{background:'rgba(255,255,255,.01)'}}>
+      <div className="inner" ref={ref}>
+        <h2 className="sec-title sr">All Projects</h2>
+        <p className="sr sr-delay-1" style={{color:'var(--subtle)',marginBottom:'30px',maxWidth:'540px',marginTop:'6px'}}>
+          From probabilistic inference engines to VR cognitive simulations, full-stack systems, and ML research.
+        </p>
+        <div className="sr sr-delay-2" style={{display:'flex',gap:'8px',flexWrap:'wrap',marginBottom:'34px'}}>
+          {tabs.map(t=><button key={t.id} onClick={()=>setFilter(t.id)} className={`ftab ${filter===t.id?'on':'off'}`}>{t.l}</button>)}
+        </div>
+        <div className="proj-grid sr sr-delay-3" style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(295px,1fr))',gap:'16px'}}>
+          {visible.map(p=>(
+            <div key={p.id} className="card-wrap">
+              {adminMode&&<button className="card-edit-btn" onClick={e=>{e.stopPropagation();setModal(p);}}>✏️ Edit</button>}
+              <div className={`glass hoverable`}
+                style={{padding:'22px',height:'100%',display:'flex',flexDirection:'column',cursor:'pointer',opacity:p.minor?.85:1}}
+                onClick={()=>setModal(p)}>
+                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'12px',flexWrap:'wrap',gap:'5px'}}>
+                  <span className={`badge ${catClass[p.cat]}`}>{catLabel[p.cat]}</span>
+                  {p.star&&<span style={{fontSize:'.67rem',fontWeight:700,color:'#c084fc',background:'rgba(192,132,252,.08)',border:'1px solid rgba(192,132,252,.18)',padding:'2px 9px',borderRadius:'12px'}}>⭐ {p.star}</span>}
+                </div>
+                <h3 style={{fontWeight:800,fontSize:p.minor?'.88rem':'.98rem',color:'var(--text)',marginBottom:'9px'}}>{p.title}</h3>
+                <p style={{color:'var(--subtle)',fontSize:p.minor?'.81rem':'.85rem',lineHeight:1.72,flex:1,marginBottom:'14px'}}>{p.desc}</p>
+                <div style={{display:'flex',flexWrap:'wrap',gap:'6px'}}>
+                  {(p.minor?p.tech.slice(0,3):p.tech).map(t=><span key={t} className="tag">{t}</span>)}
+                </div>
+                <div style={{marginTop:'12px',color:'#818cf8',fontSize:'.74rem',fontWeight:600,opacity:.72}}>Click to view details →</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================
+   EDUCATION
+================================================================ */
+function Education() {
+  const ref=useRef(); useReveal(ref);
+  return (
+    <section id="education" className="section">
+      <div className="inner" ref={ref}>
+        <h2 className="sec-title sr">Education</h2>
+        <p className="sr sr-delay-1" style={{color:'var(--subtle)',marginBottom:'44px',maxWidth:'500px',marginTop:'6px'}}>Three countries, two scholarships, one engineering degree in progress.</p>
+        <div style={{position:'relative',paddingLeft:'42px',maxWidth:'790px'}}>
+          <div className="tl-line"/>
+          {CONFIG.education.map((e,i)=>(
+            <div key={e.id} className={`sr sr-delay-${i+1}`} style={{position:'relative',marginBottom:'20px',paddingTop:'8px'}}>
+              <div className="tl-dot" style={{top:'16px'}}/>
+              <div className="glass" style={{padding:'19px 24px'}}>
+                <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',flexWrap:'wrap',gap:'6px'}}>
+                  <span style={{fontWeight:700,fontSize:'.96rem',color:'var(--text)'}}>{e.institution}</span>
+                  <span className="mono" style={{color:'#818cf8',fontSize:'.77rem',fontWeight:500}}>{e.period}</span>
+                </div>
+                <div style={{color:'#06b6d4',fontWeight:600,marginTop:'5px',fontSize:'.89rem'}}>{e.degree}</div>
+                {e.note&&<div style={{color:'var(--subtle)',fontSize:'.79rem',marginTop:'5px'}}>📌 {e.note}</div>}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================
+   SKILLS + CERTIFICATIONS
+================================================================ */
+function Skills() {
+  const { adminMode, store, updateStore } = useContext(Ctx);
+  const ref=useRef(); useReveal(ref);
+
+  function uploadCertImage(certId,e) {
+    const f=e.target.files[0]; if(!f) return;
+    const r=new FileReader();
+    r.onload=ev=>updateStore(prev=>({...prev,certs:{...prev.certs,[certId]:{...prev.certs[certId],image:ev.target.result}}}));
+    r.readAsDataURL(f);
+  }
+  function saveCertUrl(certId,url) {
+    updateStore(prev=>({...prev,certs:{...prev.certs,[certId]:{...prev.certs[certId],imageUrl:url}}}));
+  }
+
+  return (
+    <section id="skills" className="section" style={{background:'rgba(255,255,255,.01)'}}>
+      <div className="inner" ref={ref}>
+        <h2 className="sec-title sr">Skills</h2>
+        <p className="sr sr-delay-1" style={{color:'var(--subtle)',marginBottom:'44px',maxWidth:'520px',marginTop:'6px'}}>
+          Strong foundations in probabilistic reasoning, software architecture, and multi-paradigm programming.
+        </p>
+        <div className="skills-grid sr sr-delay-2" style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(325px,1fr))',gap:'16px'}}>
+          {Object.entries(CONFIG.skills).map(([cat,items])=>(
+            <div key={cat} className="glass" style={{padding:'20px 22px'}}>
+              <h3 style={{fontWeight:700,fontSize:'.73rem',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:'11px'}}>
+                <span className="gradient-text">{cat}</span>
+              </h3>
+              <div style={{display:'flex',flexWrap:'wrap',gap:'7px'}}>{items.map(s=><span key={s} className="tag">{s}</span>)}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Certifications */}
+        <div className="sr sr-delay-3" style={{marginTop:'50px'}}>
+          <h3 style={{fontWeight:700,color:'var(--muted)',marginBottom:'18px',fontSize:'.9rem'}}>Certifications</h3>
+          <div style={{display:'flex',gap:'16px',flexWrap:'wrap'}}>
+            {CONFIG.certifications.map(cert=>{
+              const cd=store.certs[cert.id]||{};
+              const imgSrc=cd.image||cd.imageUrl;
+              return(
+                <div key={cert.id} className="glass" style={{padding:'22px',maxWidth:'480px',flex:1,minWidth:'270px'}}>
+                  <div style={{display:'flex',gap:'14px',alignItems:'flex-start'}}>
+                    <span style={{fontSize:'1.7rem',flexShrink:0}}>{cert.relevant?'📐':'🏆'}</span>
+                    <div style={{flex:1}}>
+                      <div style={{fontWeight:700,color:'var(--text)',fontSize:'.94rem'}}>{cert.name}</div>
+                      <div style={{color:'var(--subtle)',fontSize:'.77rem',marginTop:'2px'}}>{cert.issuer}</div>
+                      <div style={{color:'var(--muted)',fontSize:'.83rem',marginTop:'7px',lineHeight:1.65}}>{cert.note}</div>
+                      {imgSrc&&(
+                        <div style={{marginTop:'13px'}}>
+                          <img src={imgSrc} alt="Certificate" style={{width:'100%',borderRadius:'8px',border:'1px solid var(--border)',cursor:'pointer',transition:'transform .2s'}}
+                            onClick={()=>window.open(imgSrc,'_blank')} onMouseEnter={e=>e.target.style.transform='scale(1.015)'} onMouseLeave={e=>e.target.style.transform='scale(1)'}/>
+                          <div style={{fontSize:'.7rem',color:'var(--subtle)',marginTop:'4px'}}>Click to view full size</div>
+                        </div>
+                      )}
+                      {adminMode&&<CertAdmin cert={cert} cd={cd} onUpload={uploadCertImage} onUrl={saveCertUrl}/>}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================
+   CERTIFICATE ADMIN PANEL
+================================================================ */
+function CertAdmin({ cert, cd, onUpload, onUrl }) {
+  const [urlVal, setUrlVal] = useState(cd.imageUrl||'');
+  return (
+    <div style={{marginTop:'13px',paddingTop:'13px',borderTop:'1px solid rgba(109,40,217,.2)'}}>
+      <div style={{fontSize:'.7rem',color:'#a78bfa',fontWeight:700,marginBottom:'9px'}}>🔧 ADMIN — Certificate Image</div>
+      <div style={{display:'flex',gap:'7px',marginBottom:'7px'}}>
+        <input className="form-input" placeholder="Image URL..." value={urlVal} onChange={e=>setUrlVal(e.target.value)} style={{fontSize:'.79rem',padding:'7px 11px'}}/>
+        <button className="btn btn-sm btn-purple" onClick={()=>onUrl(cert.id,urlVal)}>Save URL</button>
+      </div>
+      <label className="btn btn-ghost btn-sm" style={{cursor:'pointer',fontSize:'.73rem'}}>
+        📁 Upload File <input type="file" accept="image/*" style={{display:'none'}} onChange={e=>onUpload(cert.id,e)}/>
+      </label>
+    </div>
+  );
+}
+
+/* ================================================================
+   CONTACT
+================================================================ */
+function Contact() {
+  const ref=useRef(); useReveal(ref);
+  return (
+    <section id="contact" className="section">
+      <div className="inner" ref={ref}>
+        <div style={{maxWidth:'640px',margin:'0 auto',textAlign:'center'}}>
+          <h2 className="sec-title sr" style={{display:'inline-block'}}>Let's Connect</h2>
+          <p className="sr sr-delay-1" style={{color:'var(--subtle)',lineHeight:1.85,margin:'18px 0 38px',fontSize:'.97rem'}}>
+            I'm actively looking for internship opportunities in probabilistic modeling, Bayesian methods, and software engineering. If you're working on something interesting in these areas, I'd love to talk.
+          </p>
+          <div className="sr sr-delay-2" style={{display:'flex',gap:'11px',justifyContent:'center',flexWrap:'wrap',marginBottom:'44px'}}>
+            <a href={`mailto:${CONFIG.email}`} className="btn btn-primary" style={{padding:'13px 32px'}}>📧 Send Email</a>
+            {CONFIG.linkedin&&<a href={CONFIG.linkedin} target="_blank" className="btn btn-ghost" style={{padding:'13px 26px'}}>LinkedIn</a>}
+            {CONFIG.github  &&<a href={CONFIG.github}   target="_blank" className="btn btn-ghost" style={{padding:'13px 26px'}}>GitHub</a>}
+          </div>
+          <div className="sr sr-delay-3 glass" style={{display:'inline-block',padding:'13px 26px'}}>
+            <span className="mono" style={{color:'var(--muted)',fontSize:'.87rem'}}>{CONFIG.email}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================
+   FOOTER
+================================================================ */
+function Footer() {
+  return (
+    <footer style={{padding:'24px 5%',borderTop:'1px solid rgba(255,255,255,.04)',textAlign:'center',color:'var(--subtle)',fontSize:'.79rem'}}>
+      <p>Built by <span className="gradient-text" style={{fontWeight:700}}>{CONFIG.name}</span> — {new Date().getFullYear()} &nbsp;·&nbsp; <span style={{opacity:.45}}>React + localStorage</span></p>
+    </footer>
+  );
+}
+
+/* ================================================================
+   APP ROOT
+================================================================ */
+function App() {
+  const [adminMode, setAdminMode] = useState(false);
+  const [store,     setStore]     = useState(()=>loadStore());
+  const [modal,     setModal]     = useState(null);   // selected project
+
+  const updateStore = useCallback(updater=>{
+    setStore(prev=>{ const next=typeof updater==='function'?updater(prev):updater; saveStore(next); return next; });
+  },[]);
+
+  // Lock body scroll when modal is open
+  useEffect(()=>{ document.body.style.overflow=modal?'hidden':''; return()=>{ document.body.style.overflow=''; }; },[modal]);
+
+  const ctx={ adminMode,setAdminMode, store,updateStore, modal,setModal };
+
+  return (
+    <Ctx.Provider value={ctx}>
+      {adminMode&&<AdminBar onExit={()=>setAdminMode(false)}/>}
+      <Navbar/>
+      <Hero/>
+      <ProbabilisticFocus/>
+      <About/>
+      <Projects/>
+      <Education/>
+      <Skills/>
+      <Contact/>
+      <Footer/>
+      <ProjectModal/>
+      <AdminToggle/>
+    </Ctx.Provider>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
