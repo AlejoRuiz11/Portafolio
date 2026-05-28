@@ -1,14 +1,14 @@
 /** ============================================================
  *  Portfolio Data - edit this file to update all content.
- *  To add GitHub links / images / videos to projects, use the
- *  Admin Panel in the browser (bottom-right corner).
+ *  Admin Panel (bottom-right) lets you add GitHub links,
+ *  images, videos and notes to any project.
  * ============================================================ */
 
 export const personal = {
-  name:      'Alejo Ruiz',
+  name:      'Alejandro Ruiz',
   role:      'Systems Engineering Student',
   tagline:   'Software Architecture · Design Patterns · Machine Learning · 3 Countries',
-  bio:       'Systems Engineering student with strong foundations in software architecture, design patterns, and object-oriented systems design. I build things that are technically solid from multi-tier enterprise systems to VR simulations and ML pipelines. I also bring a complementary background in probability and Bayesian statistics. International academic experience across Colombia, Argentina, and Austria.',
+  bio:       'Systems Engineering student with strong foundations in software architecture, design patterns, and object-oriented systems design. I build things that are technically solid — from multi-tier enterprise systems to VR simulations and ML pipelines. I work with PyTorch and have hands-on experience with PyMC for probabilistic programming and Bayesian modeling. International academic experience across Colombia, Argentina, and Austria.',
   email:     'alejoruiz1110@gmail.com',
   github:    '',
   linkedin:  '',
@@ -47,7 +47,7 @@ export const education = [
   },
 ]
 
-/** Projects - ordered by architectural complexity */
+/** Projects */
 export const projects = [
   {
     id:        'duckventure',
@@ -62,16 +62,17 @@ export const projects = [
     minor:     false,
   },
   {
-    id:        'dealership',
-    title:     'Dealership Management System',
-    short:     'Dealership System',
-    desc:      'Multi-tier enterprise system: React frontend + Spring Boot REST API + Oracle SQL, with Django as a secondary admin client. Applied Singleton, Observer, and MVC patterns throughout all layers.',
-    longDesc:  'A full-stack system built to demonstrate cross-tier software architecture. The Spring Boot server implements strict MVC with a service/repository layering; Singleton ensures shared resource management; Observer drives cross-client event propagation between the React and Django clients. The Oracle database was designed with full normalization, ER modeling, and relational constraints.',
-    tech:      ['Spring Boot', 'React', 'Django', 'Oracle SQL', 'MVC', 'Singleton', 'Observer', 'REST API', 'OOP'],
-    cat:       'arch',
-    star:      'Full-stack + 3 tiers',
+    id:        'searchme',
+    title:     'SearchMe - Probabilistic Object Matching',
+    short:     'SearchMe',
+    desc:      'Django platform for lost & found reports in university environments. Core feature: a Bayesian inference engine that computes the posterior probability that a lost report and a found report refer to the same object.',
+    longDesc:  'SearchMe is built around a probabilistic matching module in Django. Given attributes from two object reports, the Bayesian engine computes a posterior probability of identity - factoring in attribute similarity, location overlap, and time proximity. The Django backend follows clean REST architecture with serialized API responses. The project was conceived to explore real-world applications of probabilistic inference in a structured software system.',
+    tech:      ['Django', 'Python', 'Bayesian Inference', 'REST API', 'Probabilistic Modeling'],
+    cat:       'ml',
+    star:      'Bayesian engine',
     highlight: true,
     minor:     false,
+    github:    'https://github.com/AlejoRuiz11/CampusFind',
   },
   {
     id:        'attention-chaos',
@@ -98,14 +99,27 @@ export const projects = [
     minor:     false,
   },
   {
-    id:        'searchme',
-    title:     'SearchMe - Probabilistic Object Matching',
-    short:     'SearchMe',
-    desc:      'Django platform for lost & found reports in university environments. Core feature: a Bayesian inference engine that computes the posterior probability that a lost report and a found report refer to the same object.',
-    longDesc:  'SearchMe is built around a probabilistic matching module in Django. Given attributes from two object reports, the Bayesian engine computes a posterior probability of identity - factoring in attribute similarity, location overlap, and time proximity. The Django backend follows clean REST architecture with serialized API responses. The project was conceived to explore real-world applications of probabilistic inference in a structured software system.',
-    tech:      ['Django', 'Python', 'Bayesian Inference', 'REST API', 'Probabilistic Modeling'],
-    cat:       'ml',
-    star:      'Bayesian engine',
+    id:        'faroti',
+    title:     'FAROTI - Digital Transformation Landing Page',
+    short:     'FAROTI',
+    desc:      'Informational website for FAROTI, a digital transformation consultancy that helps organizations navigate intelligent software solutions and strategic technology development.',
+    longDesc:  'Built a responsive informational website for FAROTI - a consulting firm that helps organizations navigate digital transformation through intelligent software solutions and scalable technology development. The site communicates the company brand and service offering clearly, guiding visitors through FAROTI\'s value proposition: providing the guidance, stability, and vision businesses need in an ever-evolving digital landscape.\n\nFocus was placed on clean UX, clear content hierarchy, and a modern visual identity that reflects the company\'s positioning as a trusted technology partner.',
+    tech:      ['React', 'HTML', 'CSS', 'JavaScript', 'Responsive Design', 'UI/UX'],
+    cat:       'web',
+    star:      '',
+    highlight: false,
+    minor:     false,
+    demo:      'https://www.faroti.com/',
+  },
+  {
+    id:        'dealership',
+    title:     'Dealership Management System',
+    short:     'Dealership System',
+    desc:      'Multi-tier enterprise system: React frontend + Spring Boot REST API + Oracle SQL, with Django as a secondary admin client. Applied Singleton, Observer, and MVC patterns throughout all layers.',
+    longDesc:  'A full-stack system built to demonstrate cross-tier software architecture. The Spring Boot server implements strict MVC with a service/repository layering; Singleton ensures shared resource management; Observer drives cross-client event propagation between the React and Django clients. The Oracle database was designed with full normalization, ER modeling, and relational constraints.',
+    tech:      ['Spring Boot', 'React', 'Django', 'Oracle SQL', 'MVC', 'Singleton', 'Observer', 'REST API', 'OOP'],
+    cat:       'arch',
+    star:      'Full-stack + 3 tiers',
     highlight: true,
     minor:     false,
   },
@@ -113,13 +127,27 @@ export const projects = [
     id:        'ml-workshops',
     title:     'ML & Statistics Workshops in R',
     short:     'ML Workshops',
-    desc:      'Four statistical computing workshops in R covering supervised and unsupervised ML: SVM, Naive Bayes, Neural Networks, K-means, and Kohonen Self-Organizing Maps.',
+    desc:      'Practical coursework in machine learning using R - SVMs, Naive Bayes, neural networks, K-means clustering, and Kohonen Self-Organizing Maps.',
     longDesc:  'Each workshop is a structured implementation and analysis of a different ML technique:\n- Support Vector Machines (SVM) with kernel methods for binary classification.\n- Naive Bayes classifiers leveraging Bayesian probabilistic reasoning over feature distributions.\n- Multi-layer Neural Networks with backpropagation and activation function experiments.\n- K-means clustering with elbow-method for optimal k selection.\n- Kohonen Self-Organizing Maps for unsupervised topological dimensionality reduction.\nAll workshops include model training, performance evaluation, and interpretation of statistical outputs.',
     tech:      ['R', 'SVM', 'Naive Bayes', 'Neural Networks', 'K-means', 'Kohonen Maps', 'Statistical Computing'],
     cat:       'ml',
     star:      '',
     highlight: false,
     minor:     false,
+    github:    'https://github.com/AlejoRuiz11/artificial-intelligence',
+  },
+  {
+    id:        'pymc-scripts',
+    title:     'Bayesian Inference Scripts with PyMC',
+    short:     'PyMC Scripts',
+    desc:      'Python scripts exploring Bayesian inference and probabilistic modeling using PyMC - covering prior/posterior updates, sampling methods, and model building.',
+    longDesc:  'A collection of Python scripts developed to explore Bayesian inference and probabilistic modeling using the PyMC library. Covers the core workflow of Bayesian analysis: defining priors, specifying likelihoods, running MCMC sampling, and interpreting posterior distributions. A hands-on exploration of probabilistic programming as a foundation for more advanced modeling work.',
+    tech:      ['Python', 'PyMC', 'Bayesian Inference', 'MCMC', 'Probabilistic Modeling', 'Statistical Computing'],
+    cat:       'ml',
+    star:      '',
+    highlight: false,
+    minor:     true,
+    github:    'https://github.com/AlejoRuiz11/TestsPyMC',
   },
   {
     id:        'circo',
@@ -132,6 +160,19 @@ export const projects = [
     star:      '',
     highlight: false,
     minor:     false,
+  },
+  {
+    id:        'laparranda',
+    title:     'La Parranda - Liquor Distribution Website',
+    short:     'La Parranda',
+    desc:      'Informational website for a liquor and beer distributor in Ibague. Showcases the product catalog, brand portfolio, and wholesale service offering.',
+    longDesc:  'Developed an informational website for La Parranda, a liquor and beer distributor based in Ibague, Colombia. The site connects businesses and customers with the best liquor and beer brands through a clean, browsable product catalog. Design focus on clear product presentation, brand identity, and easy navigation for wholesale and retail visitors.',
+    tech:      ['React', 'HTML', 'CSS', 'JavaScript', 'Responsive Design'],
+    cat:       'web',
+    star:      '',
+    highlight: false,
+    minor:     false,
+    demo:      'https://la-parranda.vercel.app/',
   },
   {
     id:        'minishop',
@@ -170,7 +211,7 @@ export const skills = {
   'Machine Learning & Statistics': [
     'Supervised Learning', 'Unsupervised Learning', 'Bayesian Statistics',
     'Naive Bayes', 'SVM', 'Neural Networks', 'K-means', 'Kohonen Maps',
-    'Probabilistic Reasoning', 'Statistical Computing',
+    'Probabilistic Reasoning', 'Statistical Computing', 'PyMC',
   ],
   'Simulation & Game Development': [
     'Unity', 'Unity VR', 'Multi-threading', 'Event-Driven Systems',
@@ -180,7 +221,7 @@ export const skills = {
     'C#', 'Java', 'JavaScript', 'Python', 'PHP', 'R', 'C++', 'SQL', 'HTML / CSS',
   ],
   'Frameworks & Technologies': [
-    'Spring Boot', 'Django', 'Laravel', 'React', 'Vite', 'Git', 'Blender', 'Photoshop', 'Camtasia',
+    'Spring Boot', 'Django', 'Laravel', 'React', 'PyTorch', 'Vite', 'Git', 'Blender', 'Photoshop', 'Camtasia',
   ],
   'Databases': [
     'Oracle SQL', 'MySQL', 'MySQL Workbench', 'Relational Databases', 'Data Modeling', 'ERD',
@@ -195,6 +236,20 @@ export const certifications = [
     issuer:   'Online Certification',
     note:     'Covers probabilistic inference, prior/posterior distributions, Bayesian updating, and applied reasoning under uncertainty.',
     relevant: true,
+  },
+  {
+    id:       'pytorch',
+    name:     'Foundations and Core Concepts of PyTorch',
+    issuer:   'Online Certification',
+    note:     'Covers the foundational building blocks of PyTorch: tensors, autograd, neural network modules, and training pipelines.',
+    relevant: true,
+  },
+  {
+    id:       'scrum',
+    name:     'Scrum Master',
+    issuer:   'Online Certification',
+    note:     'Scrum framework, sprint planning, retrospectives, and agile team facilitation.',
+    relevant: false,
   },
 ]
 

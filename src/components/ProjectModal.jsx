@@ -51,8 +51,8 @@ export default function ProjectModal() {
 
           {/* External links */}
           <div style={{ display: 'flex', gap: 9, marginTop: 13, flexWrap: 'wrap' }}>
-            {extras.github && <a href={extras.github} target="_blank" rel="noreferrer" className="btn btn-ghost btn-sm">⎈ GitHub</a>}
-            {extras.demo   && <a href={extras.demo}   target="_blank" rel="noreferrer" className="btn btn-ghost btn-sm">▶ Demo</a>}
+            {(extras.github || modal.github) && <a href={extras.github || modal.github} target="_blank" rel="noreferrer" className="btn btn-ghost btn-sm">⎈ GitHub</a>}
+            {(extras.demo   || modal.demo)   && <a href={extras.demo   || modal.demo}   target="_blank" rel="noreferrer" className="btn btn-ghost btn-sm">▶ Live Demo</a>}
           </div>
         </div>
 

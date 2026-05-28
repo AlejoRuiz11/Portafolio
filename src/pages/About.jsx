@@ -23,7 +23,7 @@ export default function About() {
               I've built 3D simulation systems in Unity, multi-tier enterprise applications with Spring Boot and Django, and machine learning pipelines in R. In every project, architectural thinking comes first — clean separation of concerns, the right pattern for the right problem.
             </p>
             <p className="sr d3" style={{ color: 'var(--muted)', lineHeight: 1.9, marginBottom: 28, fontSize: '0.97rem' }}>
-              I also have a solid foundation in probability and Bayesian statistics — developed through formal coursework, certification, and projects like SearchMe. My next step is PyTorch to push further into deep learning and probabilistic modeling.
+              I also have a solid foundation in probability and Bayesian statistics — developed through formal coursework, certification, and projects like SearchMe. I work with PyTorch and have hands-on experience with PyMC for probabilistic programming and Bayesian modeling.
             </p>
 
             <div className="sr d4" style={{ display: 'flex', gap: 11, flexWrap: 'wrap' }}>
