@@ -107,7 +107,7 @@ export const projects = [
     tech:      ['React', 'HTML', 'CSS', 'JavaScript', 'Responsive Design', 'UI/UX'],
     cat:       'web',
     star:      '',
-    highlight: false,
+    highlight: true,
     minor:     false,
     demo:      'https://www.faroti.com/',
   },
@@ -120,7 +120,7 @@ export const projects = [
     tech:      ['Spring Boot', 'React', 'Django', 'Oracle SQL', 'MVC', 'Singleton', 'Observer', 'REST API', 'OOP'],
     cat:       'arch',
     star:      'Full-stack + 3 tiers',
-    highlight: true,
+    highlight: false,
     minor:     false,
   },
   {
