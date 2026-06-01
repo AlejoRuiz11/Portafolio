@@ -22,7 +22,7 @@ export default function ProjectModal() {
   if (!modal) return null
 
   const extras = store.projects[modal.id] || {}
-  const ytId   = extractYtId(extras.videoUrl || '')
+  const ytId   = extractYtId(extras.videoUrl || modal.video || '')
   const imgs   = (extras.imageUrls || []).filter(Boolean)
   const hasMedia = !!(ytId || imgs.length)
 

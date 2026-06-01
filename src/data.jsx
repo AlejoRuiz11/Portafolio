@@ -60,6 +60,7 @@ export const projects = [
     star:      'Architecture showcase',
     highlight: true,
     minor:     false,
+    video:     'https://www.youtube.com/watch?v=LjN_yCsCLLo',
   },
   {
     id:        'searchme',
@@ -72,7 +73,7 @@ export const projects = [
     star:      'Bayesian engine',
     highlight: true,
     minor:     false,
-    github:    'https://github.com/AlejoRuiz11/CampusFind',
+    github:    'https://github.com/AlejoRuiz11/SearchMe',
   },
   {
     id:        'attention-chaos',
@@ -85,6 +86,7 @@ export const projects = [
     star:      '',
     highlight: false,
     minor:     false,
+    video:     'https://www.youtube.com/watch?v=cJmE-muFlaU',
   },
   {
     id:        'barbershop',

@@ -60,6 +60,7 @@ export const projects = [
     star:      'Architecture showcase',
     highlight: true,
     minor:     false,
+    video:     'https://www.youtube.com/watch?v=LjN_yCsCLLo',
   },
   {
     id:        'dealership',
@@ -97,6 +98,7 @@ export const projects = [
     star:      '',
     highlight: false,
     minor:     false,
+    video:     'https://www.youtube.com/watch?v=cJmE-muFlaU',
   },
   {
     id:        'barbershop',
