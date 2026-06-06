@@ -102,21 +102,45 @@ export default function Home() {
             Highlighted work spanning software architecture, simulation systems, and probabilistic modeling.
           </p>
 
-          <div className="feat-grid sr d2" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(330px,1fr))', gap: 20 }}>
-            {featured.map(p => (
-              <div key={p.id} className="glass hov" onClick={() => setModal(p)} style={{ padding: 26 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 13, flexWrap: 'wrap', gap: 6 }}>
-                  <span className={`badge ${CAT_CLASS[p.cat]}`}>{CAT_LABEL[p.cat]}</span>
+          <div className="sr d2" style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+            {/* Hero card — first featured project */}
+            {featured[0] && (() => { const p = featured[0]; return (
+              <div key={p.id} className="glass hov" onClick={() => setModal(p)}
+                style={{ padding: '32px 36px', border: '1px solid rgba(99,102,241,0.35)', boxShadow: '0 0 40px rgba(99,102,241,0.12)', position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: -60, right: -60, width: 220, height: 220, borderRadius: '50%', background: 'rgba(99,102,241,0.07)', pointerEvents: 'none' }} />
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14, flexWrap: 'wrap', gap: 8 }}>
+                  <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+                    <span className={`badge ${CAT_CLASS[p.cat]}`}>{CAT_LABEL[p.cat]}</span>
+                    <span style={{ fontSize: '0.68rem', fontWeight: 700, color: '#6ee7b7', background: 'rgba(110,231,183,0.1)', border: '1px solid rgba(110,231,183,0.25)', padding: '2px 10px', borderRadius: 12 }}>⭐ Featured</span>
+                  </div>
                   {p.star && <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#c084fc', background: 'rgba(192,132,252,.09)', border: '1px solid rgba(192,132,252,.2)', padding: '2px 10px', borderRadius: 12 }}>⭐ {p.star}</span>}
                 </div>
-                <h3 style={{ fontWeight: 800, fontSize: '1.02rem', color: 'var(--text)', marginBottom: 9 }}>{p.short}</h3>
-                <p style={{ color: 'var(--subtle)', fontSize: '0.87rem', lineHeight: 1.75, marginBottom: 18 }}>{p.desc}</p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, marginBottom: 14 }}>
-                  {p.tech.slice(0, 5).map(t => <span key={t} className="tag">{t}</span>)}
+                <h3 style={{ fontWeight: 900, fontSize: '1.3rem', color: 'var(--text)', marginBottom: 10 }}>{p.short}</h3>
+                <p style={{ color: 'var(--subtle)', fontSize: '0.93rem', lineHeight: 1.8, marginBottom: 20, maxWidth: 680 }}>{p.desc}</p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, marginBottom: 16 }}>
+                  {p.tech.slice(0, 7).map(t => <span key={t} className="tag">{t}</span>)}
                 </div>
-                <span style={{ color: '#818cf8', fontSize: '0.75rem', fontWeight: 600 }}>View details →</span>
+                <span style={{ color: '#818cf8', fontSize: '0.78rem', fontWeight: 700 }}>View details →</span>
               </div>
-            ))}
+            )})()}
+
+            {/* Remaining featured projects */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(330px,1fr))', gap: 20 }}>
+              {featured.slice(1).map(p => (
+                <div key={p.id} className="glass hov" onClick={() => setModal(p)} style={{ padding: 26 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 13, flexWrap: 'wrap', gap: 6 }}>
+                    <span className={`badge ${CAT_CLASS[p.cat]}`}>{CAT_LABEL[p.cat]}</span>
+                    {p.star && <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#c084fc', background: 'rgba(192,132,252,.09)', border: '1px solid rgba(192,132,252,.2)', padding: '2px 10px', borderRadius: 12 }}>⭐ {p.star}</span>}
+                  </div>
+                  <h3 style={{ fontWeight: 800, fontSize: '1.02rem', color: 'var(--text)', marginBottom: 9 }}>{p.short}</h3>
+                  <p style={{ color: 'var(--subtle)', fontSize: '0.87rem', lineHeight: 1.75, marginBottom: 18 }}>{p.desc}</p>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, marginBottom: 14 }}>
+                    {p.tech.slice(0, 5).map(t => <span key={t} className="tag">{t}</span>)}
+                  </div>
+                  <span style={{ color: '#818cf8', fontSize: '0.75rem', fontWeight: 600 }}>View details →</span>
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="sr d3" style={{ marginTop: 36, textAlign: 'center' }}>

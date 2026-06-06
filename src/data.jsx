@@ -8,7 +8,7 @@ export const personal = {
   name:      'Alejandro Ruiz',
   role:      'Systems Engineering Student',
   tagline:   'Software Architecture · Design Patterns · Machine Learning · 3 Countries',
-  bio:       'Systems Engineering student with strong foundations in software architecture, design patterns, and object-oriented systems design. I build things that are technically solid — from multi-tier enterprise systems to VR simulations and ML pipelines. I work with PyTorch and have hands-on experience with PyMC for probabilistic programming and Bayesian modeling. International academic experience across Colombia, Argentina, and Austria.',
+  bio:       'Systems Engineering student with strong foundations in software architecture, design patterns, and object-oriented systems design. I build things that are technically solid — from multi-tier enterprise systems to VR simulations and ML pipelines. I have hands-on experience with PyMC for probabilistic programming and Bayesian modeling, including MCMC sampling and MAP inference. International academic experience across Colombia, Argentina, and Austria.',
   email:     'alejoruiz1110@gmail.com',
   github:    '',
   linkedin:  '',
@@ -50,6 +50,19 @@ export const education = [
 /** Projects */
 export const projects = [
   {
+    id:        'searchme',
+    title:     'SearchMe - Probabilistic Object Matching',
+    short:     'SearchMe',
+    desc:      'Django platform for lost & found reports in university environments. Core feature: a Bayesian inference engine that computes the posterior probability that a lost report and a found report refer to the same object.',
+    longDesc:  'SearchMe is built around a probabilistic matching module in Django. Given attributes from two object reports, the Bayesian engine computes a posterior probability of identity - factoring in attribute similarity, location overlap, and time proximity. The Django backend follows clean REST architecture with serialized API responses. The project was conceived to explore real-world applications of probabilistic inference in a structured software system.',
+    tech:      ['Django', 'Python', 'Bayesian Inference', 'PyMC', 'MCMC', 'MAP', 'Probabilistic Programming', 'REST API'],
+    cat:       'ml',
+    star:      'Bayesian engine',
+    highlight: true,
+    minor:     false,
+    github:    'https://github.com/AlejoRuiz11/CampusFind',
+  },
+  {
     id:        'duckventure',
     title:     'Duckventure - 3D Architecture Showcase',
     short:     'Duckventure',
@@ -61,19 +74,6 @@ export const projects = [
     highlight: true,
     minor:     false,
     video:     'https://www.youtube.com/watch?v=LjN_yCsCLLo',
-  },
-  {
-    id:        'searchme',
-    title:     'SearchMe - Probabilistic Object Matching',
-    short:     'SearchMe',
-    desc:      'Django platform for lost & found reports in university environments. Core feature: a Bayesian inference engine that computes the posterior probability that a lost report and a found report refer to the same object.',
-    longDesc:  'SearchMe is built around a probabilistic matching module in Django. Given attributes from two object reports, the Bayesian engine computes a posterior probability of identity - factoring in attribute similarity, location overlap, and time proximity. The Django backend follows clean REST architecture with serialized API responses. The project was conceived to explore real-world applications of probabilistic inference in a structured software system.',
-    tech:      ['Django', 'Python', 'Bayesian Inference', 'REST API', 'Probabilistic Modeling'],
-    cat:       'ml',
-    star:      'Bayesian engine',
-    highlight: true,
-    minor:     false,
-    github:    'https://github.com/AlejoRuiz11/SearchMe',
   },
   {
     id:        'attention-chaos',
