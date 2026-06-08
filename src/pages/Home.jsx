@@ -103,24 +103,38 @@ export default function Home() {
           </p>
 
           <div className="sr d2" style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            {/* Hero card — first featured project */}
+            {/* Hero card — SearchMe spotlight */}
             {featured[0] && (() => { const p = featured[0]; return (
-              <div key={p.id} className="glass hov" onClick={() => setModal(p)}
-                style={{ padding: '32px 36px', border: '1px solid rgba(99,102,241,0.35)', boxShadow: '0 0 40px rgba(99,102,241,0.12)', position: 'relative', overflow: 'hidden' }}>
-                <div style={{ position: 'absolute', top: -60, right: -60, width: 220, height: 220, borderRadius: '50%', background: 'rgba(99,102,241,0.07)', pointerEvents: 'none' }} />
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14, flexWrap: 'wrap', gap: 8 }}>
-                  <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
-                    <span className={`badge ${CAT_CLASS[p.cat]}`}>{CAT_LABEL[p.cat]}</span>
-                    <span style={{ fontSize: '0.68rem', fontWeight: 700, color: '#6ee7b7', background: 'rgba(110,231,183,0.1)', border: '1px solid rgba(110,231,183,0.25)', padding: '2px 10px', borderRadius: 12 }}>⭐ Featured</span>
-                  </div>
-                  {p.star && <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#c084fc', background: 'rgba(192,132,252,.09)', border: '1px solid rgba(192,132,252,.2)', padding: '2px 10px', borderRadius: 12 }}>⭐ {p.star}</span>}
+              <div key={p.id} className="hov" onClick={() => setModal(p)} style={{
+                padding: '40px 44px',
+                background: 'linear-gradient(135deg, rgba(99,102,241,0.13) 0%, rgba(6,182,212,0.07) 100%)',
+                border: '1px solid rgba(99,102,241,0.45)',
+                borderRadius: 18,
+                boxShadow: '0 0 0 1px rgba(99,102,241,0.1), 0 8px 60px rgba(99,102,241,0.18)',
+                position: 'relative',
+                overflow: 'hidden',
+                cursor: 'pointer',
+              }}>
+                {/* Glow blobs */}
+                <div style={{ position: 'absolute', top: -80, right: -80, width: 300, height: 300, borderRadius: '50%', background: 'rgba(99,102,241,0.1)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', bottom: -60, left: '40%', width: 200, height: 200, borderRadius: '50%', background: 'rgba(6,182,212,0.07)', pointerEvents: 'none' }} />
+
+                {/* Top label */}
+                <div style={{ marginBottom: 20, display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+                  <span className={`badge ${CAT_CLASS[p.cat]}`}>{CAT_LABEL[p.cat]}</span>
+                  {p.star && <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#c084fc', background: 'rgba(192,132,252,.09)', border: '1px solid rgba(192,132,252,.2)', padding: '3px 11px', borderRadius: 12 }}>⭐ {p.star}</span>}
                 </div>
-                <h3 style={{ fontWeight: 900, fontSize: '1.3rem', color: 'var(--text)', marginBottom: 10 }}>{p.short}</h3>
-                <p style={{ color: 'var(--subtle)', fontSize: '0.93rem', lineHeight: 1.8, marginBottom: 20, maxWidth: 680 }}>{p.desc}</p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, marginBottom: 16 }}>
-                  {p.tech.slice(0, 7).map(t => <span key={t} className="tag">{t}</span>)}
+
+                <h3 style={{ fontWeight: 900, fontSize: 'clamp(1.3rem,3vw,1.7rem)', color: 'var(--text)', marginBottom: 12, lineHeight: 1.2 }}>{p.short}</h3>
+                <p style={{ color: 'var(--muted)', fontSize: '1rem', lineHeight: 1.85, marginBottom: 24, maxWidth: 700 }}>{p.desc}</p>
+
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 24 }}>
+                  {p.tech.map(t => <span key={t} className="tag" style={{ fontSize: '0.78rem', padding: '5px 13px' }}>{t}</span>)}
                 </div>
-                <span style={{ color: '#818cf8', fontSize: '0.78rem', fontWeight: 700 }}>View details →</span>
+
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#818cf8', fontSize: '0.82rem', fontWeight: 700, background: 'rgba(99,102,241,0.1)', border: '1px solid rgba(99,102,241,0.25)', padding: '7px 16px', borderRadius: 10 }}>
+                  View details →
+                </span>
               </div>
             )})()}
 

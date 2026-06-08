@@ -60,7 +60,7 @@ export const projects = [
     star:      'Bayesian engine',
     highlight: true,
     minor:     false,
-    github:    'https://github.com/AlejoRuiz11/CampusFind',
+    github:    'https://github.com/AlejoRuiz11/SearchMe',
   },
   {
     id:        'duckventure',
